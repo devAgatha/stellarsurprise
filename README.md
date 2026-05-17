@@ -19,25 +19,28 @@ Send money that stays completely hidden until a surprise unlock date. Perfect fo
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      Next.js App                            │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
-│  │  Public Pages│  │  API Routes  │  │  Server Services │  │
-│  │  /send       │  │  /api/gifts  │  │  gift.service    │  │
-│  │  /dashboard  │  │  /api/auth   │  │  claim.service   │  │
-│  │  /auth/login │  │  /api/cron   │  │  scheduler       │  │
-│  └──────────────┘  └──────────────┘  └──────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-         │                    │                    │
-         ▼                    ▼                    ▼
-   Paystack / Stripe    PostgreSQL DB         Stellar Network
-   (fiat on-ramp)       (gift records)        (USDC + Soroban)
-                                                    │
-                                          ┌─────────────────┐
-                                          │  Escrow Contract │
-                                          │  (Soroban/Rust)  │
-                                          │  Time-locked USDC│
-                                          └─────────────────┘
+Next.js App
+  ├── Pages:    /send  /dashboard  /auth/login
+  ├── API:      /api/gifts  /api/auth  /api/payments  /api/cron
+  └── Services: gift.service  claim.service  scheduler
+        |               |                |
+        v               v                v
+  Paystack/Stripe   PostgreSQL      Stellar Network
+  (fiat on-ramp)   (gift records)  (USDC + Soroban)
+                                         |
+                                   Escrow Contract
+                                   (Soroban / Rust)
+                                   Time-locked USDC
+```
+
+### Gift Flow
+
+```
+1. Sender creates gift  -->  Paystack/Stripe payment
+2. Payment confirmed    -->  USDC locked in Soroban escrow
+3. Cron job runs        -->  Checks unlock_at timestamp
+4. unlock_at reached    -->  Gift status set to "unlocked"
+5. Recipient claims     -->  USDC transferred on Stellar
 ```
 
 ## Tech Stack
