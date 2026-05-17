@@ -1,7 +1,7 @@
 # StellarSurprise 🎁
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build](https://github.com/yourorg/stellarsurprise/actions/workflows/ci.yml/badge.svg)](https://github.com/yourorg/stellarsurprise/actions/workflows/ci.yml)
+[![Build](https://github.com/devAgatha/stellarsurprise/actions/workflows/ci.yml/badge.svg)](https://github.com/devAgatha/stellarsurprise/actions/workflows/ci.yml)
 [![Stellar](https://img.shields.io/badge/Stellar-Testnet-blue)](https://stellar.org)
 [![Soroban](https://img.shields.io/badge/Soroban-Smart%20Contracts-purple)](https://soroban.stellar.org)
 
@@ -60,7 +60,7 @@ Next.js App
 ### Docker (Recommended)
 
 ```bash
-git clone https://github.com/yourorg/stellarsurprise.git
+git clone https://github.com/devAgatha/stellarsurprise.git
 cd stellarsurprise
 cp .env.example .env.local
 docker-compose up
